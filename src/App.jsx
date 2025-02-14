@@ -1,14 +1,16 @@
+import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import HomePage from './components/routes/Home';
+import LoginPage from './components/routes/Login';
 import ProtectedPage from './components/routes/Protected';
-import LoginPage from './components/routes/Login';  
-import { Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
-import { RouterProvider } from 'react-router-dom'
+import AuthProvider from './providers/AuthProvider';
 
 export const router = createBrowserRouter(
   createRoutes([
-    <Route path="/" element={<HomePage/>} />,
-    <Route path="/protected-page" element={<ProtectedPage />}/>,
-    <Route path="/login" element={<LoginPage applicationName={'APIHUB Portal'}/>}/>,
+    <Route path="/">
+      <Route index element={<HomePage />} />
+      <Route path="/protected-page" element={<ProtectedPage />} />
+    </Route>,
+    <Route path="/login" element={<LoginPage applicationName={'APIHUB Portal'} />} />,
   ]),
 )
 
@@ -18,7 +20,9 @@ function createRoutes(routers) {
 
 function App() {
   return (
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   );
 }
 
