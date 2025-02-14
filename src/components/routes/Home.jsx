@@ -1,4 +1,6 @@
 import { NavLink } from 'react-router-dom';
+import ButtonLogout from '../kit/ButtonLogout';
+import NavBar from '../kit/NavBar';
 
 function HomePage() {
   return (
@@ -12,9 +14,12 @@ function HomePage() {
         <br />
         But you can try to access Protected Page:
       </div>
-      <NavLink className="button" to="/protected-page">
-        Protected Page
-      </NavLink>
+      <NavBar>
+        <NavLink className="button" to="/protected-page">
+          Protected Page
+        </NavLink>
+        <ButtonLogout />
+      </NavBar>
     </div>
   );
 }
