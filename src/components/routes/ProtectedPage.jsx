@@ -2,19 +2,19 @@ import { NavLink } from 'react-router-dom';
 import ButtonLogout from '../kit/ButtonLogout';
 import NavBar from '../kit/NavBar';
 import { useEffect, useState } from 'react';
+import { API_GET_PROTECTED_RESOURCE } from '../../consts/api';
 
 function ProtectedPage() {
   const [protectedData, setProtectedData] = useState(null);
 
   useEffect(() => {
     const fetchProtectedData = async () => {
-      const response = await fetch('http://localhost:4000/api/protected-resource', {
-        method: 'GET',
-        credentials: 'include',
+      const response = await fetch(API_GET_PROTECTED_RESOURCE, {
+        credentials: 'include', // Include cookies
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       const data = await response.json();
