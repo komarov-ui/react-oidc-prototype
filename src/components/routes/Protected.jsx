@@ -1,12 +1,34 @@
 import { NavLink } from 'react-router-dom';
 import ButtonLogout from '../kit/ButtonLogout';
 import NavBar from '../kit/NavBar';
+import { useEffect, useState } from 'react';
 
 function ProtectedPage() {
+  const [protectedData, setProtectedData] = useState(null);
+
+  useEffect(() => {
+    const fetchProtectedData = async () => {
+      const response = await fetch('http://localhost:4000/api/protected-resource', {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setProtectedData(data);
+    }
+
+    fetchProtectedData();
+  }, [])
+
   return (
     <div className="page-container">
       <h1>Protected Page</h1>
-      Some protected content
+      Some protected content:
+      {protectedData && <div>{JSON.stringify(protectedData)}</div>}
       <NavBar>
         <NavLink className="button" to="/">
           Home

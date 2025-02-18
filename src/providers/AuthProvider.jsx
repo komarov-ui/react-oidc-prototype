@@ -1,6 +1,7 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import keycloak from "../auth/keycloak";
-import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from "../consts/auth";
+import { createContext, useContext, useEffect } from "react";
+import { useLocalStorage } from "react-use";
+import { redirectToKeycloak } from "../auth/redirectToKeycloak";
+import { AUTH_KEY, AUTH_LOADING_KEY } from "../consts/auth";
 
 const AuthContexxt = createContext(false);
 const SetAuthContext = createContext(() => { });
@@ -14,43 +15,19 @@ export function useSetAuth() {
 }
 
 export default function AuthProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+  const [auth, setAuth] = useLocalStorage(AUTH_KEY);
+  const [authLoading, setAuthLoading] = useLocalStorage(AUTH_LOADING_KEY)
+  
   useEffect(() => {
-    if (keycloak.authenticated) {
-      return;
+    if (!authLoading && !auth) {
+      setAuthLoading(true);
+      redirectToKeycloak();
     }
-
-    keycloak.onAuthSuccess = () => {
-      setIsAuthenticated(true);
-      sessionStorage.setItem(ACCESS_TOKEN_KEY, keycloak.token);
-      sessionStorage.setItem(REFRESH_TOKEN_KEY, keycloak.refreshToken);
-    };
-    keycloak.onAuthError = () => {
-      setIsAuthenticated(false);
-      sessionStorage.removeItem(ACCESS_TOKEN_KEY);
-      sessionStorage.removeItem(REFRESH_TOKEN_KEY);
-    };
-    keycloak.onAuthRefreshSuccess = () => {
-      setIsAuthenticated(true);
-      sessionStorage.setItem(ACCESS_TOKEN_KEY, keycloak.token);
-      sessionStorage.setItem(REFRESH_TOKEN_KEY, keycloak.refreshToken);
-    };
-    keycloak.onAuthRefreshError = () => {
-      setIsAuthenticated(false);
-      sessionStorage.removeItem(ACCESS_TOKEN_KEY);
-      sessionStorage.removeItem(REFRESH_TOKEN_KEY);
-    };
-    keycloak.onAuthLogout = () => {
-      setIsAuthenticated(false);
-      sessionStorage.removeItem(ACCESS_TOKEN_KEY);
-      sessionStorage.removeItem(REFRESH_TOKEN_KEY);
-    };
-  }, []);
+  }, [auth, authLoading, setAuthLoading]);
 
   return (
-    <AuthContexxt.Provider value={isAuthenticated}>
-      <SetAuthContext.Provider value={setIsAuthenticated}>
+    <AuthContexxt.Provider value={auth}>
+      <SetAuthContext.Provider value={setAuth}>
         {children}
       </SetAuthContext.Provider>
     </AuthContexxt.Provider>
