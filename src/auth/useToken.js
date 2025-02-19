@@ -1,19 +1,20 @@
-import { useLocalStorage } from 'react-use';
 import { useEffect, useRef } from 'react';
-import { AUTH_KEY, AUTH_LOADING_KEY } from '../consts/auth';
+import { useLocalStorage } from 'react-use';
 import { API_GET_REQUEST_TOKEN } from '../consts/api';
+import { AUTH_KEY, AUTH_LOADING_KEY, AUTH_ORIGIN_PAGE } from '../consts/auth';
 
 export function useToken(code) {
   const [, setAuth] = useLocalStorage(AUTH_KEY);
   const [, setAuthLoading] = useLocalStorage(AUTH_LOADING_KEY)
+  const [originPage] = useLocalStorage(AUTH_ORIGIN_PAGE)
 
-  const codeUsed = useRef(false)
+  const isAuthorizationCodeUsed = useRef(false)
 
   useEffect(() => {
-    if (codeUsed.current) {
+    if (isAuthorizationCodeUsed.current) {
       return;
     }
-    codeUsed.current = true;
+    isAuthorizationCodeUsed.current = true;
 
     // Request access token and refresh token
     fetch(`${API_GET_REQUEST_TOKEN}?code=` + encodeURIComponent(code), {
@@ -22,8 +23,10 @@ export function useToken(code) {
     }).then(() => {
       setAuth(true);
       setAuthLoading(false);
-      codeUsed.current = false;
-      window.location.href = '/'
+      isAuthorizationCodeUsed.current = false;
+      if (originPage) {
+        location.href = originPage
+      }
     }).catch(error => console.error(error));
-  }, [code, setAuth, setAuthLoading])
+  }, [code, originPage, setAuth, setAuthLoading])
 }
