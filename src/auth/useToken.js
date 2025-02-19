@@ -23,6 +23,7 @@ export function useToken(code) {
       setAuth(true);
       setAuthLoading(false);
       codeUsed.current = false;
+      window.location.href = '/'
     }).catch(error => console.error(error));
   }, [code, setAuth, setAuthLoading])
 }
