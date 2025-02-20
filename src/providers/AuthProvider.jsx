@@ -1,20 +1,20 @@
 import { useEffect } from "react";
 import { useLocalStorage } from "react-use";
 import { redirectToKeycloak } from "../auth/redirectToKeycloak";
-import { AUTH_KEY, AUTH_LOADING_KEY, AUTH_ORIGIN_PAGE } from "../consts/auth";
+import { LOCAL_STORAGE_KEY_USER_INFO, LOCAL_STORAGE_KEY_AUTH_LOADING, LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE } from "../consts/auth";
 
 export default function AuthProvider({ children }) {
-  const [authData] = useLocalStorage(AUTH_KEY);
-  const [authLoading, setAuthLoading] = useLocalStorage(AUTH_LOADING_KEY)
-  const [, setOriginPage] = useLocalStorage(AUTH_ORIGIN_PAGE)
+  const [userInfo] = useLocalStorage(LOCAL_STORAGE_KEY_USER_INFO);
+  const [authLoading, setAuthLoading] = useLocalStorage(LOCAL_STORAGE_KEY_AUTH_LOADING)
+  const [, setAuthOriginPage] = useLocalStorage(LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE)
 
   useEffect(() => {
-    if (!authLoading && !authData) {
+    if (!authLoading && !userInfo) {
       setAuthLoading(true);
-      setOriginPage(location.href)
+      setAuthOriginPage(location.href)
       redirectToKeycloak();
     }
-  }, [authData, authLoading, setAuthLoading, setOriginPage]);
+  }, [userInfo, authLoading, setAuthLoading, setAuthOriginPage]);
 
   return <>{children}</>;
 } 

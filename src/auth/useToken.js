@@ -1,36 +1,37 @@
 import { useEffect, useRef } from 'react';
 import { useLocalStorage } from 'react-use';
 import { API_GET_REQUEST_TOKEN } from '../consts/api';
-import { AUTH_KEY, AUTH_LOADING_KEY, AUTH_ORIGIN_PAGE } from '../consts/auth';
+import { LOCAL_STORAGE_KEY_USER_INFO, LOCAL_STORAGE_KEY_AUTH_LOADING, LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE, SEARCH_PARAM_CODE_KEY } from '../consts/auth';
 
-export function useToken(authCode) {
-  const [, setAuth] = useLocalStorage(AUTH_KEY);
-  const [, , clearAuthLoading] = useLocalStorage(AUTH_LOADING_KEY)
-  const [originPage, , clearOriginPage] = useLocalStorage(AUTH_ORIGIN_PAGE)
+export function useAuthorization(authorizationCode) {
+  const [, setUserInfo] = useLocalStorage(LOCAL_STORAGE_KEY_USER_INFO);
+  const [, , clearAuthLoading] = useLocalStorage(LOCAL_STORAGE_KEY_AUTH_LOADING)
+  const [originPage, , clearAuthOriginPage] = useLocalStorage(LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE)
 
-  const isAuthorizationCodeUsed = useRef(null)
+  const cachedAuthorizationCode = useRef(null)
 
   useEffect(() => {
-    const savedAuthCode = isAuthorizationCodeUsed.current
-    if (savedAuthCode && savedAuthCode === authCode) {
+    if (
+      cachedAuthorizationCode.current &&
+      cachedAuthorizationCode.current === authorizationCode
+    ) {
       return;
     }
-    isAuthorizationCodeUsed.current = authCode;
+    cachedAuthorizationCode.current = authorizationCode;
 
     // Request access token and refresh token
-    fetch(`${API_GET_REQUEST_TOKEN}?code=` + encodeURIComponent(authCode), {
+    fetch(`${API_GET_REQUEST_TOKEN}?${SEARCH_PARAM_CODE_KEY}=` + encodeURIComponent(authorizationCode), {
       credentials: 'include', // Include cookies
     }).then(response => {
       return response.json();
-    }).then((data) => {
-      console.log('Auth Result: ', data)
-      setAuth(JSON.stringify(data));
+    }).then(userInfo => {
+      console.log('User Info: ', userInfo)
+      setUserInfo(userInfo);
       clearAuthLoading();
-      clearOriginPage();
-      // isAuthorizationCodeUsed.current = false;
+      clearAuthOriginPage();
       if (originPage) {
         location.href = originPage
       }
     }).catch(error => console.error(error));
-  }, [clearAuthLoading, clearOriginPage, authCode, originPage, setAuth])
+  }, [clearAuthLoading, clearAuthOriginPage, authorizationCode, originPage, setUserInfo])
 }

@@ -1,12 +1,13 @@
 import { NavLink } from 'react-router-dom';
-import { useToken } from '../../auth/useToken';
+import { useAuthorization } from '../../auth/useToken';
 import { useSearchParam } from '../../utils/useSearchParam';
 import ButtonLogout from '../kit/ButtonLogout';
 import NavBar from '../kit/NavBar';
+import { SEARCH_PARAM_CODE_KEY } from '../../consts/auth';
 
 function LoginPage() {
-  const code = useSearchParam('code')
-  useToken(code)
+  const authorizationCode = useSearchParam(SEARCH_PARAM_CODE_KEY)
+  useAuthorization(authorizationCode)
 
   return (
     <div className="page-container">
