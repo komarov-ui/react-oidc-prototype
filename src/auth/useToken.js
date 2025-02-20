@@ -1,11 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { useLocalStorage } from 'react-use';
 import { API_GET_REQUEST_TOKEN } from '../consts/api';
-import { LOCAL_STORAGE_KEY_USER_INFO, LOCAL_STORAGE_KEY_AUTH_LOADING, LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE, SEARCH_PARAM_CODE_KEY } from '../consts/auth';
+import { LOCAL_STORAGE_KEY_USER_INFO, LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE, SEARCH_PARAM_CODE_KEY } from '../consts/auth';
 
 export function useAuthorization(authorizationCode) {
   const [, setUserInfo] = useLocalStorage(LOCAL_STORAGE_KEY_USER_INFO);
-  const [, , clearAuthLoading] = useLocalStorage(LOCAL_STORAGE_KEY_AUTH_LOADING)
   const [originPage, , clearAuthOriginPage] = useLocalStorage(LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE)
 
   const cachedAuthorizationCode = useRef(null)
@@ -27,11 +26,10 @@ export function useAuthorization(authorizationCode) {
     }).then(userInfo => {
       console.log('User Info: ', userInfo)
       setUserInfo(userInfo);
-      clearAuthLoading();
       clearAuthOriginPage();
       if (originPage) {
         location.href = originPage
       }
     }).catch(error => console.error(error));
-  }, [clearAuthLoading, clearAuthOriginPage, authorizationCode, originPage, setUserInfo])
+  }, [clearAuthOriginPage, authorizationCode, originPage, setUserInfo])
 }
