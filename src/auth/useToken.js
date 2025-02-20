@@ -5,8 +5,8 @@ import { AUTH_KEY, AUTH_LOADING_KEY, AUTH_ORIGIN_PAGE } from '../consts/auth';
 
 export function useToken(code) {
   const [, setAuth] = useLocalStorage(AUTH_KEY);
-  const [, setAuthLoading] = useLocalStorage(AUTH_LOADING_KEY)
-  const [originPage] = useLocalStorage(AUTH_ORIGIN_PAGE)
+  const [, , clearAuthLoading] = useLocalStorage(AUTH_LOADING_KEY)
+  const [originPage, , clearOriginPage] = useLocalStorage(AUTH_ORIGIN_PAGE)
 
   const isAuthorizationCodeUsed = useRef(false)
 
@@ -18,15 +18,18 @@ export function useToken(code) {
 
     // Request access token and refresh token
     fetch(`${API_GET_REQUEST_TOKEN}?code=` + encodeURIComponent(code), {
-      // Include cookies
-      credentials: 'include',
-    }).then(() => {
-      setAuth(true);
-      setAuthLoading(false);
-      isAuthorizationCodeUsed.current = false;
+      credentials: 'include', // Include cookies
+    }).then(response => {
+      return response.json();
+    }).then((data) => {
+      console.log('Auth Result: ', data)
+      setAuth(JSON.stringify(data));
+      clearAuthLoading();
+      clearOriginPage();
+      // isAuthorizationCodeUsed.current = false;
       if (originPage) {
         location.href = originPage
       }
     }).catch(error => console.error(error));
-  }, [code, originPage, setAuth, setAuthLoading])
+  }, [clearAuthLoading, clearOriginPage, code, originPage, setAuth])
 }
