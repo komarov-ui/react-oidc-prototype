@@ -4,12 +4,17 @@ import { API_GET_REQUEST_TOKEN } from '../consts/api';
 import { LOCAL_STORAGE_KEY_USER_INFO, LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE, SEARCH_PARAM_CODE_KEY } from '../consts/auth';
 
 export function useAuthorization(authorizationCode) {
-  const [, setUserInfo] = useLocalStorage(LOCAL_STORAGE_KEY_USER_INFO);
+  const [userInfo, setUserInfo] = useLocalStorage(LOCAL_STORAGE_KEY_USER_INFO);
   const [originPage, , clearAuthOriginPage] = useLocalStorage(LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE)
 
   const cachedAuthorizationCode = useRef(null)
 
   useEffect(() => {
+    // exit when we just required user info
+    if (!authorizationCode) {
+      return;
+    }
+    // exit when we have already used authorization code
     if (
       cachedAuthorizationCode.current &&
       cachedAuthorizationCode.current === authorizationCode
@@ -32,4 +37,6 @@ export function useAuthorization(authorizationCode) {
       }
     }).catch(error => console.error(error));
   }, [clearAuthOriginPage, authorizationCode, originPage, setUserInfo])
+
+  return { userInfo }
 }

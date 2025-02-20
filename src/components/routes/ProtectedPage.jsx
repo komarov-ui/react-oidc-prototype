@@ -3,9 +3,12 @@ import ButtonLogout from '../kit/ButtonLogout';
 import NavBar from '../kit/NavBar';
 import { useEffect, useState } from 'react';
 import { API_GET_PROTECTED_RESOURCE } from '../../consts/api';
+import { useAuthorization } from '../../auth/useToken';
 
 function ProtectedPage() {
   const [protectedData, setProtectedData] = useState(null);
+
+  const { userInfo } = useAuthorization()
 
   useEffect(() => {
     const fetchProtectedData = async () => {
@@ -28,7 +31,10 @@ function ProtectedPage() {
     <div className="page-container">
       <h1>Protected Page</h1>
       Some protected content:
-      {protectedData && <div>{JSON.stringify(protectedData)}</div>}
+      {protectedData && <pre>{JSON.stringify(protectedData, null, 2)}</pre>}
+      <br/>
+      Some user info:
+      {userInfo && <pre>{JSON.stringify(userInfo, null, 2)}</pre>}
       <NavBar>
         <NavLink className="button" to="/">
           Home
