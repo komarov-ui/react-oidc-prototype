@@ -13,6 +13,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.66.7",
     "cookie-parser": "^1.4.6",
+    "ky": "^1.7.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router": "^7.1.5",

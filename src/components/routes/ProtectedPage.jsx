@@ -4,6 +4,7 @@ import NavBar from '../kit/NavBar';
 import { useEffect, useState } from 'react';
 import { API_GET_PROTECTED_RESOURCE } from '../../consts/api';
 import { useAuthorization } from '../../auth/useToken';
+import { kyFetch } from '../../api/interceptor';
 
 function ProtectedPage() {
   const [protectedData, setProtectedData] = useState(null);
@@ -12,7 +13,11 @@ function ProtectedPage() {
 
   useEffect(() => {
     const fetchProtectedData = async () => {
-      const response = await fetch(API_GET_PROTECTED_RESOURCE, {
+      if (!userInfo) {
+        return;
+      }
+      
+      const response = await kyFetch(API_GET_PROTECTED_RESOURCE, {
         credentials: 'include', // Include cookies
       });
 
