@@ -3,7 +3,7 @@ import HomePage from './components/routes/HomePage';
 import LoginPage from './components/routes/LoginPage';
 import LogoutPage from './components/routes/LogoutPage';
 import ProtectedPage from './components/routes/ProtectedPage';
-import AuthProvider from './providers/AuthProvider';
+// import AuthProvider from './providers/AuthProvider';
 
 export const router = createBrowserRouter(
   createRoutes([
@@ -21,11 +21,12 @@ function createRoutes(routers) {
 }
 
 function App() {
-  return (
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
-  );
+  return <RouterProvider router={router} />;
+  // return (
+  //   <AuthProvider>
+  //     <RouterProvider router={router} />
+  //   </AuthProvider>
+  // );
 }
 
 export default App

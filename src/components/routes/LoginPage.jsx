@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { useAuthorization } from '../../auth/useToken';
+import { useAuthorization } from '../../auth/useAuthorization';
 import { useSearchParam } from '../../utils/useSearchParam';
 import ButtonLogout from '../kit/ButtonLogout';
 import NavBar from '../kit/NavBar';

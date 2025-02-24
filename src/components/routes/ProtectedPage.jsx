@@ -3,7 +3,7 @@ import ButtonLogout from '../kit/ButtonLogout';
 import NavBar from '../kit/NavBar';
 import { useEffect, useState } from 'react';
 import { API_GET_PROTECTED_RESOURCE } from '../../consts/api';
-import { useAuthorization } from '../../auth/useToken';
+import { useAuthorization } from '../../auth/useAuthorization';
 import { kyFetch } from '../../api/interceptor';
 
 function ProtectedPage() {
@@ -13,10 +13,6 @@ function ProtectedPage() {
 
   useEffect(() => {
     const fetchProtectedData = async () => {
-      if (!userInfo) {
-        return;
-      }
-      
       const response = await kyFetch(API_GET_PROTECTED_RESOURCE, {
         credentials: 'include', // Include cookies
       });
@@ -37,7 +33,7 @@ function ProtectedPage() {
       <h1>Protected Page</h1>
       Some protected content:
       {protectedData && <pre>{JSON.stringify(protectedData, null, 2)}</pre>}
-      <br/>
+      <br />
       Some user info:
       {userInfo && <pre>{JSON.stringify(userInfo, null, 2)}</pre>}
       <NavBar>

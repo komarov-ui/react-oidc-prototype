@@ -1,13 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { useLocalStorage } from 'react-use';
 import { API_GET_REQUEST_TOKEN } from '../consts/api';
-import { LOCAL_STORAGE_KEY_AUTH_IN_PROGRESS, LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE, LOCAL_STORAGE_KEY_USER_INFO, SEARCH_PARAM_CODE_KEY } from '../consts/auth';
+import { LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE, LOCAL_STORAGE_KEY_USER_INFO, SEARCH_PARAM_CODE_KEY } from '../consts/auth';
 
 export function useAuthorization(authorizationCode) {
-  const [userInfo, setUserInfo] = useLocalStorage(LOCAL_STORAGE_KEY_USER_INFO);
-  const [, , clearIsAuthenticating] = useLocalStorage(LOCAL_STORAGE_KEY_AUTH_IN_PROGRESS);
-  const [originPage, , clearAuthOriginPage] = useLocalStorage(LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE)
-
   const cachedAuthorizationCode = useRef(null)
 
   useEffect(() => {
@@ -31,14 +26,13 @@ export function useAuthorization(authorizationCode) {
       return response.json();
     }).then(userInfo => {
       console.log('User Info: ', userInfo)
-      setUserInfo(userInfo);
-      clearIsAuthenticating();
-      clearAuthOriginPage();
+      localStorage.setItem(LOCAL_STORAGE_KEY_USER_INFO, JSON.stringify(userInfo))
+      const originPage = localStorage.getItem(LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE)
       if (originPage) {
         location.href = originPage
       }
     }).catch(error => console.error(error));
-  }, [clearAuthOriginPage, authorizationCode, originPage, setUserInfo, clearIsAuthenticating])
+  }, [authorizationCode])
 
-  return { userInfo }
+  return { userInfo: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_USER_INFO)) }
 }
