@@ -25,14 +25,14 @@ export function useAuthorization(authorizationCode) {
     }).then(response => {
       return response.json();
     }).then(userInfo => {
-      console.log('User Info: ', userInfo)
-      localStorage.setItem(LOCAL_STORAGE_KEY_USER_INFO, JSON.stringify(userInfo))
+      localStorage.setItem(LOCAL_STORAGE_KEY_USER_INFO, userInfo.idToken)
       const originPage = localStorage.getItem(LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE)
+      localStorage.removeItem(LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE);
       if (originPage) {
         location.href = originPage
       }
     }).catch(error => console.error(error));
   }, [authorizationCode])
 
-  return { userInfo: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY_USER_INFO)) }
+  return { userInfo: localStorage.getItem(LOCAL_STORAGE_KEY_USER_INFO) }
 }

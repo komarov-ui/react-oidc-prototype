@@ -1,7 +1,6 @@
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import HomePage from './components/routes/HomePage';
 import LoginPage from './components/routes/LoginPage';
-import LogoutPage from './components/routes/LogoutPage';
 import ProtectedPage from './components/routes/ProtectedPage';
 
 export const router = createBrowserRouter(
@@ -11,7 +10,6 @@ export const router = createBrowserRouter(
       <Route path="/protected-page" element={<ProtectedPage />} />
     </Route>,
     <Route path="/login" element={<LoginPage applicationName='APIHUB Portal' />} />,
-    <Route path="/logout" element={<LogoutPage applicationName='APIHUB Portal' />} />,
   ]),
 )
 

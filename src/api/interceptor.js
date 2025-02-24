@@ -1,6 +1,6 @@
 import ky from 'ky';
 import { redirectToKeycloak } from '../auth/redirectToKeycloak';
-import { LOCAL_STORAGE_KEY_AUTH_IN_PROGRESS, LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE, LOCAL_STORAGE_KEY_USER_INFO } from '../consts/auth';
+import { LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE, LOCAL_STORAGE_KEY_USER_INFO } from '../consts/auth';
 
 export const kyFetch = ky.create({
   hooks: {
@@ -13,8 +13,7 @@ export const kyFetch = ky.create({
       (request, options, response) => {
         console.log("Intercepted response:", response);
         if (response.status === 401 || response.status === 403) {
-          localStorage.clear(LOCAL_STORAGE_KEY_USER_INFO);
-          localStorage.setItem(LOCAL_STORAGE_KEY_AUTH_IN_PROGRESS, 'true');
+          localStorage.removeItem(LOCAL_STORAGE_KEY_USER_INFO);
           localStorage.setItem(LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE, location.href);
           redirectToKeycloak();
         }
