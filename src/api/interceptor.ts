@@ -1,5 +1,5 @@
 import ky from 'ky';
-import { redirectToKeycloak } from '../auth/redirectToKeycloak';
+import { keycloakAuth } from '../auth/redirects';
 import { LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE, LOCAL_STORAGE_KEY_USER_INFO } from '../consts/auth';
 
 export const kyFetch = ky.create({
@@ -15,7 +15,7 @@ export const kyFetch = ky.create({
         if (response.status === 401 || response.status === 403) {
           localStorage.removeItem(LOCAL_STORAGE_KEY_USER_INFO);
           localStorage.setItem(LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE, location.href);
-          redirectToKeycloak();
+          keycloakAuth();
         }
       }
     ]

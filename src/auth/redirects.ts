@@ -6,7 +6,7 @@ const KEYCLOAK_CLIENT_ID = 'apihub-oidc-client';
 const REDIRECT_URI = encodeURIComponent('http://localhost:5173/login');
 const POST_LOGOUT_REDIRECT_URI = encodeURIComponent('http://localhost:5173')
 
-export function redirectToKeycloak(): void {
+export function keycloakAuth(): void {
   location.href =
     `${KEYCLOAK_URL}/` +
     `realms/${KEYCLOAK_REALM}/` +
@@ -17,7 +17,7 @@ export function redirectToKeycloak(): void {
     `scope=openid profile email`;
 }
 
-export function logout(): void {
+export function keycloakLogout(): void {
   const idToken = localStorage.getItem(LOCAL_STORAGE_KEY_USER_INFO);
   localStorage.clear();
   location.href =
