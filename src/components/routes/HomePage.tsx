@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
-import ButtonLogout from '../kit/ButtonLogout';
-import NavBar from '../kit/NavBar';
+import { ButtonLogout } from '../kit/ButtonLogout';
+import { NavBar } from '../kit/NavBar';
 
 function HomePage() {
   return (

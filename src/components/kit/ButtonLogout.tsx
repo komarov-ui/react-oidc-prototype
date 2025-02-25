@@ -1,6 +1,7 @@
+import { FC } from "react";
 import { logout } from "../../auth/redirectToKeycloak";
 
-export default function ButtonLogout() {
+export const ButtonLogout: FC = () => {
   return (
     <button className="button" onClick={logout}>
       Logout

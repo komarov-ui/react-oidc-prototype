@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react';
 import { API_GET_REQUEST_TOKEN } from '../consts/api';
 import { LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE, LOCAL_STORAGE_KEY_USER_INFO, SEARCH_PARAM_CODE_KEY } from '../consts/auth';
 
-export function useAuthorization(authorizationCode) {
-  const cachedAuthorizationCode = useRef(null)
+export function useAuthorization(authorizationCode?: string) {
+  const cachedAuthorizationCode = useRef<string | null>(null)
 
   useEffect(() => {
     // exit when we just required user info

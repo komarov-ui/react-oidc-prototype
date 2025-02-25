@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { kyFetch } from '../../api/interceptor';
 import { useAuthorization } from '../../auth/useAuthorization';
 import { API_GET_ANOTHER_PROTECTED_RESOURCE, API_GET_PROTECTED_RESOURCE } from '../../consts/api';
-import ButtonLogout from '../kit/ButtonLogout';
-import NavBar from '../kit/NavBar';
+import { NavBar } from '../kit/NavBar';
+import { ButtonLogout } from '../kit/ButtonLogout';
 
-const fetchProtectedData = async (setProtectedData) => {
+const fetchProtectedData = async (setProtectedData: Dispatch<SetStateAction<unknown>>) => {
   const response = await kyFetch(API_GET_PROTECTED_RESOURCE, {
     credentials: 'include', // Include cookies
   });
@@ -19,7 +19,7 @@ const fetchProtectedData = async (setProtectedData) => {
   setProtectedData(data);
 }
 
-const fetchAnotherProtectedData = async (setAnotherProtectedData) => {
+const fetchAnotherProtectedData = async (setAnotherProtectedData: Dispatch<SetStateAction<unknown>>) => {
   const response = await kyFetch(API_GET_ANOTHER_PROTECTED_RESOURCE, {
     credentials: 'include', // Include cookies
   });
@@ -33,8 +33,8 @@ const fetchAnotherProtectedData = async (setAnotherProtectedData) => {
 }
 
 function ProtectedPage() {
-  const [protectedData, setProtectedData] = useState(null);
-  const [anotherProtectedData, setAnotherProtectedData] = useState(null);
+  const [protectedData, setProtectedData] = useState<unknown>(null);
+  const [anotherProtectedData, setAnotherProtectedData] = useState<unknown>(null);
 
   const { userInfo } = useAuthorization()
 
@@ -46,14 +46,14 @@ function ProtectedPage() {
   return (
     <div className="page-container">
       <h1>Protected Page</h1>
-      {protectedData && (
+      {!!protectedData && (
         <>
           Some protected content:
           <pre>{JSON.stringify(protectedData, null, 2)}</pre>
           <br />
         </>
       )}
-      {anotherProtectedData && (
+      {!!anotherProtectedData && (
         <>
           One more protected content:
           <pre>{JSON.stringify(anotherProtectedData, null, 2)}</pre>
