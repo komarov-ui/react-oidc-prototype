@@ -11,6 +11,12 @@ export default defineConfig({
       key: fs.readFileSync('./ssl/server.key'),
       cert: fs.readFileSync('./ssl/server.crt'),
     },
-
+    proxy: {
+      '/api': {
+        target: 'https://localhost:4000',
+        changeOrigin: true,
+        secure: true,
+      }
+    }
   }
 })

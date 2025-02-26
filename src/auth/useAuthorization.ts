@@ -20,7 +20,10 @@ export function useAuthorization(authorizationCode?: string) {
     cachedAuthorizationCode.current = authorizationCode;
 
     // Request access token and refresh token
-    fetch(`${API_GET_REQUEST_TOKEN}?${SEARCH_PARAM_CODE_KEY}=` + encodeURIComponent(authorizationCode), {
+    fetch(`${API_GET_REQUEST_TOKEN}?` + new URLSearchParams({
+      [SEARCH_PARAM_CODE_KEY]: encodeURIComponent(authorizationCode),
+      currentUrl: encodeURIComponent(location.href),
+    }), {
       credentials: 'include', // Include cookies
     }).then(response => {
       return response.json();
@@ -29,7 +32,7 @@ export function useAuthorization(authorizationCode?: string) {
       const originPage = localStorage.getItem(LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE)
       localStorage.removeItem(LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE);
       if (originPage) {
-        location.href = originPage
+        // location.href = originPage
       }
     }).catch(error => console.error(error));
   }, [authorizationCode])
