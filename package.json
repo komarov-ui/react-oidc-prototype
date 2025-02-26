@@ -1,9 +1,8 @@
 {
   "name": "@komarov-ui/react-oidc-prototype",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
-  "proxy": "http://localhost:4000",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -22,6 +21,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@types/node": "^22.13.5",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@types/react-router-dom": "^5.3.3",

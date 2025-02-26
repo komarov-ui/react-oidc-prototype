@@ -1,10 +1,10 @@
 import { LOCAL_STORAGE_KEY_USER_INFO } from "../consts/auth";
 
-const KEYCLOAK_URL = 'http://localhost:7777';
-const KEYCLOAK_REALM = 'apihub';
-const KEYCLOAK_CLIENT_ID = 'apihub-oidc-client';
-const REDIRECT_URI = encodeURIComponent('http://localhost:5173/login');
-const POST_LOGOUT_REDIRECT_URI = encodeURIComponent('http://localhost:5173')
+const KEYCLOAK_URL = 'https://localhost:8443';
+const KEYCLOAK_REALM = 'oidc-app';
+const KEYCLOAK_CLIENT_ID = 'test-oidc-client';
+const REDIRECT_URI = encodeURIComponent('https://localhost:5173/login');
+const POST_LOGOUT_REDIRECT_URI = encodeURIComponent('https://localhost:5173')
 
 export function keycloakAuth(): void {
   location.href =
