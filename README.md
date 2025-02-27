@@ -1,5 +1,7 @@
 ## oidc-prototype (frontend service)
 
+**Documentation:** https://github.com/komarov-ui/oidc-prototype
+
 ### Getting Started
 
 #### 1. Install packages
