@@ -1,8 +1,27 @@
-# React + Vite
+## oidc-prototype (frontend service)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Documentation:** https://github.com/komarov-ui/oidc-prototype
 
-Currently, two official plugins are available:
+### Getting Started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+#### 1. Install packages
+
+```
+npm ci
+```
+
+#### 2. Generate self-signed certificates
+
+*ATTENTION*: If you already have certificate and key, you may go to step 3.
+
+<TBA>
+
+#### 3. Create folder "ssl" in root of the project
+
+#### 4. Put generated certificate and key into the folder "ssl"
+
+#### 5. Run frontend
+
+```
+npm run dev
+```
