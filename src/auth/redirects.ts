@@ -7,7 +7,9 @@ const KEYCLOAK_CLIENT_ID = 'test-oidc-client';
 const POST_LOGOUT_REDIRECT_URI = encodeURIComponent('https://localhost:5173')
 
 export function keycloakAuth(): void {
-  kyFetch('https://localhost:4000/auth')
+  kyFetch('https://localhost:4000/auth', {
+    credentials: 'include',
+  })
     .then(res => res.json())
     .then((res: any) => {
       location.href = res.redirectTo;

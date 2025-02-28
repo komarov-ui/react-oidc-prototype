@@ -27,8 +27,8 @@ export function useAuthorization(authorizationCode?: string) {
       credentials: 'include', // Include cookies
     }).then(response => {
       return response.json();
-    }).then(userInfo => {
-      localStorage.setItem(LOCAL_STORAGE_KEY_USER_INFO, userInfo.idToken)
+    }).then(({ userInfo }) => {
+      localStorage.setItem(LOCAL_STORAGE_KEY_USER_INFO, JSON.stringify(userInfo))
       const originPage = localStorage.getItem(LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE)
       localStorage.removeItem(LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE);
       if (originPage) {
@@ -37,5 +37,22 @@ export function useAuthorization(authorizationCode?: string) {
     }).catch(error => console.error(error));
   }, [authorizationCode])
 
-  return { userInfo: localStorage.getItem(LOCAL_STORAGE_KEY_USER_INFO) }
+  return { userInfo: pickUserInfo() }
+}
+
+function pickUserInfo(): Record<string, unknown> | null {
+  const userInfoString = localStorage.getItem(LOCAL_STORAGE_KEY_USER_INFO)
+  if (!userInfoString) {
+    return null
+  }
+
+  const rawUserInfo = JSON.parse(userInfoString)
+  const props = new Set(['name', 'preferred_username', 'given_name', 'family_name', 'email'])
+  const result: Record<string, unknown> = {}
+  Object.keys(rawUserInfo).forEach(prop => {
+    if (props.has(prop)) {
+      result[prop] = rawUserInfo[prop]
+    }
+  })
+  return result
 }
