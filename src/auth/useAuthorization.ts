@@ -28,7 +28,9 @@ export function useAuthorization(authorizationCode?: string) {
     }).then(response => {
       return response.json();
     }).then(({ userInfo }) => {
-      localStorage.setItem(LOCAL_STORAGE_KEY_USER_INFO, JSON.stringify(userInfo))
+      if (userInfo) {
+        localStorage.setItem(LOCAL_STORAGE_KEY_USER_INFO, JSON.stringify(userInfo))
+      }
       const originPage = localStorage.getItem(LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE)
       localStorage.removeItem(LOCAL_STORAGE_KEY_AUTH_ORIGIN_PAGE);
       if (originPage) {
