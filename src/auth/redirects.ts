@@ -1,5 +1,5 @@
 import { kyFetch } from "../api/interceptor";
-import { LOCAL_STORAGE_KEY_USER_INFO } from "../consts/auth";
+import { LOCAL_STORAGE_KEY_ID_TOKEN } from "../consts/auth";
 
 const KEYCLOAK_URL = 'https://localhost:8443';
 const KEYCLOAK_REALM = 'oidc-app';
@@ -17,7 +17,7 @@ export function keycloakAuth(): void {
 }
 
 export function keycloakLogout(): void {
-  const idToken = localStorage.getItem(LOCAL_STORAGE_KEY_USER_INFO);
+  const idToken = localStorage.getItem(LOCAL_STORAGE_KEY_ID_TOKEN);
   localStorage.clear();
   location.href =
     `${KEYCLOAK_URL}/` +
